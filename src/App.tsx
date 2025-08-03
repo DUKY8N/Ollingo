@@ -18,27 +18,21 @@ function App() {
       <div className="flex flex-col items-center justify-center w-screen h-screen p-8 space-y-6">
         <div className="w-full max-w-2xl space-y-4">
           <div className="flex space-x-4">
-            <select
+            <input
+              type="text"
               value={from}
               onChange={(e) => setFrom(e.target.value)}
-              className="px-3 py-2 border rounded bg-ctp-base text-ctp-text"
-            >
-              <option value="English">English</option>
-              <option value="Korean">Korean</option>
-              <option value="Japanese">Japanese</option>
-              <option value="Chinese">Chinese</option>
-            </select>
+              placeholder="From language"
+              className="px-3 py-2 border rounded bg-ctp-base text-ctp-text placeholder-ctp-subtext0"
+            />
             <span className="self-center text-ctp-text">→</span>
-            <select
+            <input
+              type="text"
               value={to}
               onChange={(e) => setTo(e.target.value)}
-              className="px-3 py-2 border rounded bg-ctp-base text-ctp-text"
-            >
-              <option value="Korean">Korean</option>
-              <option value="English">English</option>
-              <option value="Japanese">Japanese</option>
-              <option value="Chinese">Chinese</option>
-            </select>
+              placeholder="To language"
+              className="px-3 py-2 border rounded bg-ctp-base text-ctp-text placeholder-ctp-subtext0"
+            />
           </div>
 
           <textarea
