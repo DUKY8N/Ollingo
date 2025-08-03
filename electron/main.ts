@@ -29,6 +29,7 @@ let win: BrowserWindow | null
 function createWindow() {
   win = new BrowserWindow({
     icon: path.join(process.env.VITE_PUBLIC, 'electron-vite.svg'),
+    show: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.mjs'),
     },
@@ -37,6 +38,10 @@ function createWindow() {
   // Test active push message to Renderer-process.
   win.webContents.on('did-finish-load', () => {
     win?.webContents.send('main-process-message', (new Date).toLocaleString())
+  })
+
+  win.webContents.once('did-finish-load', () => {
+    win?.show()
   })
 
   if (VITE_DEV_SERVER_URL) {
