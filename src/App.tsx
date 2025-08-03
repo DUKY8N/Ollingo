@@ -5,7 +5,6 @@ function App() {
         className="
           flex justify-center items-center
           w-screen h-screen
-          bg-ctp-base
         "
       >
         <h1 className="text-4xl text-ctp-text">Ollingo</h1>
