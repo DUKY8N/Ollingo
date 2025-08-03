@@ -1,8 +1,14 @@
 function App() {
   return (
     <>
-      <div className="flex justify-center items-center w-screen h-screen">
-        <h1 className="text-4xl">Ollingo</h1>
+      <div
+        className="
+          flex justify-center items-center
+          w-screen h-screen
+          bg-ctp-base
+        "
+      >
+        <h1 className="text-4xl text-ctp-text">Ollingo</h1>
       </div>
     </>
   );
