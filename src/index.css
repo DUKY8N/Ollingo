@@ -5,4 +5,15 @@
   html {
     @apply bg-ctp-base/30;
   }
+
+  body {
+    -webkit-app-region: drag;
+  }
+
+  button,
+  select,
+  textarea,
+  input {
+    -webkit-app-region: no-drag;
+  }
 }
