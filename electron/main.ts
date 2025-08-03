@@ -35,6 +35,7 @@ function createWindow() {
     transparent: true,
     frame: false,
     vibrancy: 'fullscreen-ui',
+    visualEffectState: 'active',
     webPreferences: {
       preload: path.join(__dirname, "preload.mjs"),
     },
