@@ -16,12 +16,10 @@ function App() {
   return (
     <>
       <div className="flex flex-col items-center justify-center w-screen h-screen p-8 space-y-6">
-        <h1 className="text-4xl text-ctp-text mb-8">Ollingo</h1>
-        
         <div className="w-full max-w-2xl space-y-4">
           <div className="flex space-x-4">
-            <select 
-              value={from} 
+            <select
+              value={from}
               onChange={(e) => setFrom(e.target.value)}
               className="px-3 py-2 border rounded bg-ctp-base text-ctp-text"
             >
@@ -31,8 +29,8 @@ function App() {
               <option value="Chinese">Chinese</option>
             </select>
             <span className="self-center text-ctp-text">→</span>
-            <select 
-              value={to} 
+            <select
+              value={to}
               onChange={(e) => setTo(e.target.value)}
               className="px-3 py-2 border rounded bg-ctp-base text-ctp-text"
             >

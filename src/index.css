@@ -2,8 +2,7 @@
 @import "@catppuccin/tailwindcss/mocha.css";
 
 @layer base {
-  html,
-  body {
-    @apply bg-ctp-base;
+  html {
+    @apply bg-ctp-base/30;
   }
 }
