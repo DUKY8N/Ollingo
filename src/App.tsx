@@ -103,9 +103,31 @@ function App() {
 
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center p-2">
-      <div className="flex h-1/2 w-full flex-col items-center p-2">
-        <LanguageInput value={to} onChange={setTo} placeholder="To language" />
+      <div className="relative flex h-1/2 w-full flex-col items-center p-2">
+        <div className="relative flex w-full px-3 justify-center items-center">
+          <div className="absolute left-2.5 flex gap-4">
+            <button className="text-ctp-surface1 hover:text-ctp-surface2 cursor-pointer transition-colors">
+              
+            </button>
+          </div>
+          <LanguageInput
+            value={to}
+            onChange={setTo}
+            placeholder="To language"
+          />
+          <div className="absolute right-2.5 flex gap-4">
+            <button className="text-ctp-surface1 hover:text-ctp-surface2 cursor-pointer transition-colors">
+              󰐃
+            </button>
+            <button className="text-ctp-surface1 hover:text-ctp-surface2 cursor-pointer transition-colors">
+              󰅙
+            </button>
+          </div>
+        </div>
         <TranslationStatus translation={translation} />
+        <button className="absolute bottom-2 right-4.5 text-ctp-surface1 hover:text-ctp-surface2 cursor-pointer transition-colors">
+          󰅍
+        </button>
       </div>
 
       <div className="relative h-1/2 w-full">
@@ -122,6 +144,9 @@ function App() {
             title="Swap languages"
           >
             
+          </button>
+          <button className="absolute top-2 right-4.5 text-ctp-overlay0 hover:text-ctp-overlay1 cursor-pointer transition-colors">
+            󰁨
           </button>
           <textarea
             value={text}
