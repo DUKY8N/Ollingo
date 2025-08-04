@@ -22,7 +22,7 @@ function LanguageInput({
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
-      className="rounded px-3 text-center text-sm text-ctp-subtext0 placeholder-ctp-overlay0 transition-colors hover:bg-ctp-lavender-50/10 focus:bg-ctp-lavender-50/10"
+      className="rounded px-3 text-center text-sm text-ctp-subtext0 placeholder-ctp-overlay1 transition-colors hover:bg-ctp-lavender-50/10 hover:text-ctp-text focus:bg-ctp-lavender-50/10 focus:text-ctp-text"
       aria-label={placeholder}
     />
   );
@@ -106,7 +106,7 @@ function App() {
       <div className="relative flex h-1/2 w-full flex-col items-center p-2">
         <div className="relative flex w-full px-3 justify-center items-center">
           <div className="absolute left-2.5 flex gap-4">
-            <button className="text-ctp-surface1 hover:text-ctp-surface2 cursor-pointer transition-colors">
+            <button className="text-ctp-subtext0/50 hover:text-ctp-subtext1 cursor-pointer transition-colors">
               
             </button>
           </div>
@@ -116,16 +116,16 @@ function App() {
             placeholder="To language"
           />
           <div className="absolute right-2.5 flex gap-4">
-            <button className="text-ctp-surface1 hover:text-ctp-surface2 cursor-pointer transition-colors">
+            <button className="text-ctp-subtext0/50 hover:text-ctp-subtext1 cursor-pointer transition-colors">
               󰐃
             </button>
-            <button className="text-ctp-surface1 hover:text-ctp-surface2 cursor-pointer transition-colors">
+            <button className="text-ctp-subtext0/50 hover:text-ctp-red cursor-pointer transition-colors">
               󰅙
             </button>
           </div>
         </div>
         <TranslationStatus translation={translation} />
-        <button className="absolute bottom-2 right-4.5 text-ctp-surface1 hover:text-ctp-surface2 cursor-pointer transition-colors">
+        <button className="absolute bottom-2 right-4.5 text-ctp-subtext0/50 hover:text-ctp-subtext1 cursor-pointer transition-colors">
           󰅍
         </button>
       </div>
@@ -139,13 +139,13 @@ function App() {
         <div className="relative flex h-full w-full flex-col items-center gap-2 p-2">
           <button
             onClick={swapLanguages}
-            className="absolute -top-5 h-10 w-10 cursor-pointer rounded-lg border-0 text-ctp-overlay2 transition-colors hover:text-ctp-blue-600"
+            className="absolute -top-5 h-10 w-10 cursor-pointer rounded-lg border-0 text-ctp-subtext0 transition-colors hover:text-ctp-blue-600"
             aria-label="Swap languages"
             title="Swap languages"
           >
             
           </button>
-          <button className="absolute top-2 right-4.5 text-ctp-overlay0 hover:text-ctp-overlay1 cursor-pointer transition-colors">
+          <button className="absolute top-2 right-4.5 text-ctp-subtext0/50 hover:text-ctp-subtext1 cursor-pointer transition-colors">
             󰁨
           </button>
           <textarea
