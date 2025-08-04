@@ -60,7 +60,7 @@ function TranslationStatus({
   if (translation.data) {
     return (
       <div
-        className="mb-4 h-full w-full p-3 text-lg text-ctp-text"
+        className="mb-4 h-full w-full overflow-y-scroll p-3 text-lg text-ctp-text"
         aria-live="polite"
       >
         <p className="w-fit whitespace-pre-wrap">{translation.data}</p>
