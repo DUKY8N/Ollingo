@@ -121,7 +121,7 @@ function App() {
             aria-label="Swap languages"
             title="Swap languages"
           >
-            ⇄
+            
           </button>
           <textarea
             value={text}

@@ -1,9 +1,15 @@
 @import "tailwindcss";
 @import "@catppuccin/tailwindcss/mocha.css";
 
+@font-face {
+  font-family: "Symbols Nerd Font";
+  src: url("./assets/SymbolsNerdFont-Regular.ttf") format("truetype");
+}
+
 @layer base {
   html {
     @apply bg-ctp-base/40;
+    font-family: "Symbols Nerd Font", sans-serif;
   }
 
   body {
