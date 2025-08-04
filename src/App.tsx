@@ -22,7 +22,7 @@ function LanguageInput({
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
-      className="px-3 text-sm text-center text-ctp-text placeholder-ctp-subtext0"
+      className="px-3 text-center text-sm text-ctp-text placeholder-ctp-subtext0"
       aria-label={placeholder}
     />
   );
@@ -36,7 +36,7 @@ function TranslationStatus({
   if (translation.isPending) {
     return (
       <div
-        className="w-full h-full p-3 text-lg text-ctp-subtext1"
+        className="mb-4 h-full w-full p-3 text-lg text-ctp-subtext1"
         role="status"
         aria-live="polite"
       >
@@ -48,7 +48,7 @@ function TranslationStatus({
   if (translation.error) {
     return (
       <div
-        className="w-full h-full p-3 text-lg text-ctp-red"
+        className="mb-4 h-full w-full p-3 text-lg text-ctp-red"
         role="alert"
         aria-live="assertive"
       >
@@ -60,7 +60,7 @@ function TranslationStatus({
   if (translation.data) {
     return (
       <div
-        className="w-full h-full p-3 text-lg text-ctp-text"
+        className="mb-4 h-full w-full p-3 text-lg text-ctp-text"
         aria-live="polite"
       >
         <p>{translation.data}</p>
@@ -69,7 +69,7 @@ function TranslationStatus({
   }
 
   return (
-    <div className="w-full h-full p-3 text-lg text-ctp-subtext1">
+    <div className="mb-4 h-full w-full p-3 text-lg text-ctp-subtext1">
       <p className="text-ctp-subtext0">Enter text to see translation</p>
     </div>
   );
@@ -102,28 +102,22 @@ function App() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center w-screen h-screen p-2">
-      <div className="flex flex-col items-center w-full h-1/2 p-2">
-        <div className="flex items-center gap-2 mb-2">
-          <LanguageInput
-            value={to}
-            onChange={setTo}
-            placeholder="To language"
-          />
-        </div>
+    <div className="flex h-screen w-screen flex-col items-center justify-center p-2">
+      <div className="flex h-1/2 w-full flex-col items-center p-2">
+        <LanguageInput value={to} onChange={setTo} placeholder="To language" />
         <TranslationStatus translation={translation} />
       </div>
 
-      <div className="relative w-full h-1/2">
+      <div className="relative h-1/2 w-full">
         <div className="absolute inset-0 opacity-10">
-          <div className="w-full h-full rounded bg-ctp-lavender-50" />
-          <div className="absolute left-1/2 w-10 h-10 -top-5 -translate-x-1/2 border-3 border-ctp-base rounded-xl bg-ctp-lavender-50" />
+          <div className="h-full w-full rounded bg-ctp-lavender-50" />
+          <div className="absolute -top-5 left-1/2 h-10 w-10 -translate-x-1/2 rounded-xl border-3 border-ctp-base bg-ctp-lavender-50" />
         </div>
 
-        <div className="relative flex flex-col items-center w-full h-full p-2">
+        <div className="relative flex h-full w-full flex-col items-center p-2">
           <button
             onClick={swapLanguages}
-            className="absolute w-10 h-10 -top-5 rounded-lg border-0 cursor-pointer text-ctp-text hover:text-ctp-blue-600 transition-colors"
+            className="absolute -top-5 h-10 w-10 cursor-pointer rounded-lg border-0 text-ctp-text transition-colors hover:text-ctp-blue-600"
             aria-label="Swap languages"
             title="Swap languages"
           >
@@ -133,7 +127,7 @@ function App() {
             value={text}
             onChange={(e) => setText(e.target.value)}
             placeholder="Enter text to translate..."
-            className="w-full h-full p-3 text-lg resize-none bg-transparent text-ctp-text placeholder-gray-500"
+            className="mt-4 h-full w-full resize-none p-3 text-lg text-ctp-text placeholder-gray-500"
             aria-label="Text to translate"
           />
           <LanguageInput
