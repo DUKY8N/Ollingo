@@ -22,7 +22,7 @@ function LanguageInput({
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
-      className="rounded px-3 text-center text-sm text-ctp-text placeholder-ctp-subtext0 transition-colors hover:bg-ctp-lavender-50/10 focus:bg-ctp-lavender-50/10"
+      className="rounded px-3 text-center text-sm text-ctp-subtext0 placeholder-ctp-overlay0 transition-colors hover:bg-ctp-lavender-50/10 focus:bg-ctp-lavender-50/10"
       aria-label={placeholder}
     />
   );
@@ -36,7 +36,7 @@ function TranslationStatus({
   if (translation.isPending) {
     return (
       <div
-        className="mb-4 h-full w-full p-3 text-lg text-ctp-subtext1"
+        className="mb-4 h-full w-full p-3 text-lg text-ctp-overlay0"
         role="status"
         aria-live="polite"
       >
@@ -69,8 +69,8 @@ function TranslationStatus({
   }
 
   return (
-    <div className="mb-4 h-full w-full p-3 text-lg text-ctp-subtext1">
-      <p className="text-ctp-subtext0">Enter text to see translation</p>
+    <div className="mb-4 h-full w-full p-3 text-lg text-ctp-overlay0">
+      <p>Enter text to see translation</p>
     </div>
   );
 }
@@ -139,7 +139,7 @@ function App() {
         <div className="relative flex h-full w-full flex-col items-center gap-2 p-2">
           <button
             onClick={swapLanguages}
-            className="absolute -top-5 h-10 w-10 cursor-pointer rounded-lg border-0 text-ctp-text transition-colors hover:text-ctp-blue-600"
+            className="absolute -top-5 h-10 w-10 cursor-pointer rounded-lg border-0 text-ctp-overlay2 transition-colors hover:text-ctp-blue-600"
             aria-label="Swap languages"
             title="Swap languages"
           >
@@ -152,7 +152,7 @@ function App() {
             value={text}
             onChange={(e) => setText(e.target.value)}
             placeholder="Enter text to translate..."
-            className="mt-4 h-full w-full resize-none p-3 text-lg text-ctp-text placeholder-gray-500"
+            className="mt-4 h-full w-full resize-none p-3 text-lg text-ctp-text placeholder-ctp-overlay1"
             aria-label="Text to translate"
           />
           <LanguageInput
