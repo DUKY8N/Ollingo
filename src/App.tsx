@@ -22,7 +22,7 @@ function LanguageInput({
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
-      className="px-3 text-center text-sm text-ctp-text placeholder-ctp-subtext0"
+      className="rounded px-3 text-center text-sm text-ctp-text placeholder-ctp-subtext0 transition-colors hover:bg-ctp-lavender-50/10 focus:bg-ctp-lavender-50/10"
       aria-label={placeholder}
     />
   );
@@ -63,7 +63,7 @@ function TranslationStatus({
         className="mb-4 h-full w-full p-3 text-lg text-ctp-text"
         aria-live="polite"
       >
-        <p className="whitespace-pre-wrap w-fit">{translation.data}</p>
+        <p className="w-fit whitespace-pre-wrap">{translation.data}</p>
       </div>
     );
   }
@@ -114,7 +114,7 @@ function App() {
           <div className="absolute -top-5 left-1/2 h-10 w-10 -translate-x-1/2 rounded-xl border-3 border-ctp-base bg-ctp-lavender-50" />
         </div>
 
-        <div className="relative flex h-full w-full flex-col items-center p-2">
+        <div className="relative flex h-full w-full flex-col items-center gap-2 p-2">
           <button
             onClick={swapLanguages}
             className="absolute -top-5 h-10 w-10 cursor-pointer rounded-lg border-0 text-ctp-text transition-colors hover:text-ctp-blue-600"
