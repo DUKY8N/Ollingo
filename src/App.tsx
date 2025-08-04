@@ -139,7 +139,7 @@ function App() {
         <div className="relative flex h-full w-full flex-col items-center gap-2 p-2">
           <button
             onClick={swapLanguages}
-            className="absolute -top-5 h-10 w-10 cursor-pointer rounded-lg border-0 text-ctp-subtext0 transition-colors hover:text-ctp-blue-600"
+            className="absolute -top-5 h-10 w-10 cursor-pointer rounded-lg border-0 text-ctp-subtext0 transition-colors hover:text-ctp-blue-500"
             aria-label="Swap languages"
             title="Swap languages"
           >
