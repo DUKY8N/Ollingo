@@ -13,6 +13,7 @@
   }
 
   body {
+    @apply selection:bg-ctp-lavender-950 selection:text-ctp-lavender-300;
     -webkit-app-region: drag;
   }
 
