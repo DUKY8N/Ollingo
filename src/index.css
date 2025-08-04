@@ -3,7 +3,7 @@
 
 @layer base {
   html {
-    @apply bg-ctp-base/30;
+    @apply bg-ctp-base/40;
   }
 
   body {
