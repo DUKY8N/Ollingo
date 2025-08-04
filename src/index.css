@@ -13,6 +13,7 @@
   button,
   select,
   textarea,
+  p,
   input {
     -webkit-app-region: no-drag;
     outline: none;

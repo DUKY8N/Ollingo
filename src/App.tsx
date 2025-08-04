@@ -63,7 +63,7 @@ function TranslationStatus({
         className="mb-4 h-full w-full p-3 text-lg text-ctp-text"
         aria-live="polite"
       >
-        <p>{translation.data}</p>
+        <p className="whitespace-pre-wrap w-fit">{translation.data}</p>
       </div>
     );
   }
