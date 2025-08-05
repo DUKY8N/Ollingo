@@ -50,7 +50,11 @@ const App = () => {
           />
           <div className="absolute right-2.5 flex gap-4">
             <IconButton soundCategory="toggleOn" children="󰐃" />
-            <IconButton variant="danger" children="󰅙 " />
+            <IconButton
+              variant="danger"
+              children="󰅙 "
+              onClick={() => window.window.close()}
+            />
           </div>
         </div>
 

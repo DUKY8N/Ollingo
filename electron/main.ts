@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, ipcMain } from "electron";
 import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
@@ -34,8 +34,8 @@ function createWindow() {
     show: false,
     transparent: true,
     frame: false,
-    vibrancy: 'fullscreen-ui',
-    visualEffectState: 'active',
+    vibrancy: "fullscreen-ui",
+    visualEffectState: "active",
     webPreferences: {
       preload: path.join(__dirname, "preload.mjs"),
     },
@@ -74,6 +74,10 @@ app.on("activate", () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
   }
+});
+
+ipcMain.handle("window-close", () => {
+  win?.close();
 });
 
 app.whenReady().then(createWindow);
