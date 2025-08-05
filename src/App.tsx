@@ -101,6 +101,11 @@ function App() {
     setTo(from);
   };
 
+  const playSound = (soundFile: string) => {
+    const audio = new Audio(`/src/assets/SND01-sounds/${soundFile}`);
+    audio.play().catch(console.error);
+  };
+
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center p-2">
       <div className="relative flex h-1/2 w-full flex-col items-center p-2">
