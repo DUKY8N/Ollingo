@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
-import { useTranslation } from "./hooks/useTranslation";
-import { LanguageInput } from "./components/LanguageInput";
-import { IconButton } from "./components/IconButton";
-import { TranslationStatus } from "./components/TranslationStatus";
+import useTranslation from "./hooks/useTranslation";
+import LanguageInput from "./components/LanguageInput";
+import IconButton from "./components/IconButton";
+import TranslationStatus from "./components/TranslationStatus";
 
 const DEBOUNCE_DELAY = 500;
 const DEFAULT_LANGUAGES = {
@@ -10,7 +10,7 @@ const DEFAULT_LANGUAGES = {
   to: "Korean",
 };
 
-function App() {
+const App = () => {
   const [text, setText] = useState("");
   const [from, setFrom] = useState(DEFAULT_LANGUAGES.from);
   const [to, setTo] = useState(DEFAULT_LANGUAGES.to);
@@ -105,6 +105,6 @@ function App() {
       </div>
     </div>
   );
-}
+};
 
 export default App;

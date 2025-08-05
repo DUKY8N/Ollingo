@@ -10,14 +10,14 @@ interface IconButtonProps {
   soundCategory?: SoundCategory;
 }
 
-export function IconButton({
+const IconButton = ({
   onClick,
   className,
   children,
   ariaLabel,
   title,
   soundCategory,
-}: IconButtonProps) {
+}: IconButtonProps) => {
   return (
     <button
       onClick={() => {
@@ -32,5 +32,7 @@ export function IconButton({
       {children}
     </button>
   );
-}
+};
+
+export default IconButton;
 

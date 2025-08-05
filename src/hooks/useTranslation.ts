@@ -61,9 +61,11 @@ const translateText = async (params: TranslationParams): Promise<string> => {
   return result;
 };
 
-export const useTranslation = () => {
+const useTranslation = () => {
   return useMutation({
     mutationFn: translateText,
     retry: 2,
   });
 };
+
+export default useTranslation;

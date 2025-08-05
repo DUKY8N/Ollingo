@@ -1,10 +1,10 @@
-import { useTranslation } from "../hooks/useTranslation";
+import useTranslation from "../hooks/useTranslation";
 
 interface TranslationStatusProps {
   translation: ReturnType<typeof useTranslation>;
 }
 
-export function TranslationStatus({ translation }: TranslationStatusProps) {
+const TranslationStatus = ({ translation }: TranslationStatusProps) => {
   if (translation.isPending) {
     return (
       <div
@@ -45,5 +45,7 @@ export function TranslationStatus({ translation }: TranslationStatusProps) {
       <p>Enter text to see translation</p>
     </div>
   );
-}
+};
+
+export default TranslationStatus;
 

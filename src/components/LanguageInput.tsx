@@ -6,11 +6,11 @@ interface LanguageInputProps {
   placeholder: string;
 }
 
-export function LanguageInput({
+const LanguageInput = ({
   value,
   onChange,
   placeholder,
-}: LanguageInputProps) {
+}: LanguageInputProps) => {
   return (
     <input
       type="text"
@@ -25,5 +25,7 @@ export function LanguageInput({
       }}
     />
   );
-}
+};
+
+export default LanguageInput;
 
