@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from "electron";
+import { app, BrowserWindow, ipcMain, clipboard } from "electron";
 import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
@@ -90,4 +90,42 @@ ipcMain.handle("window-is-always-on-top", () => {
   return win?.isAlwaysOnTop() || false;
 });
 
-app.whenReady().then(createWindow);
+// Clipboard handlers
+ipcMain.handle("clipboard-write-text", (_, text: string) => {
+  clipboard.writeText(text);
+});
+
+ipcMain.handle("clipboard-read-text", () => {
+  return clipboard.readText();
+});
+
+// Clipboard change monitoring
+let lastClipboardContent = "";
+let isClipboardWatching = false;
+
+const startClipboardMonitoring = () => {
+  setInterval(() => {
+    if (!isClipboardWatching) return;
+
+    const currentContent = clipboard.readText();
+    if (currentContent !== lastClipboardContent) {
+      lastClipboardContent = currentContent;
+      win?.webContents.send("clipboard-changed", currentContent);
+    }
+  }, 500);
+};
+
+ipcMain.handle("clipboard-start-watching", () => {
+  isClipboardWatching = true;
+  lastClipboardContent = clipboard.readText();
+  return lastClipboardContent;
+});
+
+ipcMain.handle("clipboard-stop-watching", () => {
+  isClipboardWatching = false;
+});
+
+app.whenReady().then(() => {
+  createWindow();
+  startClipboardMonitoring();
+});

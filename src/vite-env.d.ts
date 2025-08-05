@@ -7,6 +7,14 @@ declare global {
       setAlwaysOnTop: (alwaysOnTop: boolean) => Promise<boolean>;
       isAlwaysOnTop: () => Promise<boolean>;
     };
+    electronClipboard: {
+      writeText: (text: string) => Promise<void>;
+      readText: () => Promise<string>;
+      startWatching: () => Promise<string>;
+      stopWatching: () => Promise<void>;
+      onChanged: (callback: (text: string) => void) => void;
+      removeAllListeners: () => void;
+    };
   }
 }
 

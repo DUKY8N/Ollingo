@@ -77,7 +77,15 @@ const App = () => {
         </div>
 
         <TranslationStatus translation={translation} />
-        <IconButton className="absolute bottom-2 right-4.5" children="󰅍 " />
+        <IconButton
+          className="absolute bottom-2 right-4.5"
+          children="󰅍 "
+          onClick={() => {
+            if (translation.data) {
+              window.electronClipboard.writeText(translation.data);
+            }
+          }}
+        />
       </div>
 
       <div className="relative h-1/2 w-full">

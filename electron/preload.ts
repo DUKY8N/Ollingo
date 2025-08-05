@@ -32,3 +32,17 @@ contextBridge.exposeInMainWorld("electronWindow", {
     ipcRenderer.invoke("window-set-always-on-top", alwaysOnTop),
   isAlwaysOnTop: () => ipcRenderer.invoke("window-is-always-on-top"),
 });
+
+// Clipboard API
+contextBridge.exposeInMainWorld("electronClipboard", {
+  writeText: (text: string) => ipcRenderer.invoke("clipboard-write-text", text),
+  readText: () => ipcRenderer.invoke("clipboard-read-text"),
+  startWatching: () => ipcRenderer.invoke("clipboard-start-watching"),
+  stopWatching: () => ipcRenderer.invoke("clipboard-stop-watching"),
+  onChanged: (callback: (text: string) => void) => {
+    ipcRenderer.on("clipboard-changed", (_, text) => callback(text));
+  },
+  removeAllListeners: () => {
+    ipcRenderer.removeAllListeners("clipboard-changed");
+  },
+});
