@@ -41,9 +41,7 @@ const App = () => {
       <div className="relative flex h-1/2 w-full flex-col items-center p-2">
         <div className="relative flex w-full px-3 justify-center items-center">
           <div className="absolute left-2.5 flex gap-4">
-            <IconButton className="text-ctp-subtext0/50 hover:text-ctp-subtext1">
-              
-            </IconButton>
+            <IconButton children=" " />
           </div>
           <LanguageInput
             value={to}
@@ -51,21 +49,13 @@ const App = () => {
             placeholder="To language"
           />
           <div className="absolute right-2.5 flex gap-4">
-            <IconButton
-              className="text-ctp-subtext0/50 hover:text-ctp-subtext1"
-              soundCategory="toggleOn"
-            >
-              󰐃
-            </IconButton>
-            <IconButton className="text-ctp-subtext0/50 hover:text-ctp-red">
-              󰅙
-            </IconButton>
+            <IconButton soundCategory="toggleOn" children="󰐃" />
+            <IconButton variant="danger" children="󰅙 " />
           </div>
         </div>
+
         <TranslationStatus translation={translation} />
-        <IconButton className="absolute bottom-2 right-4.5 text-ctp-subtext0/50 hover:text-ctp-subtext1">
-          󰅍
-        </IconButton>
+        <IconButton className="absolute bottom-2 right-4.5" children="󰅍 " />
       </div>
 
       <div className="relative h-1/2 w-full">
@@ -77,18 +67,17 @@ const App = () => {
         <div className="relative flex h-full w-full flex-col items-center gap-2 p-2">
           <IconButton
             onClick={swapLanguages}
-            className="absolute -top-5 h-10 w-10 rounded-lg border-0 text-ctp-subtext0 hover:text-ctp-blue-500"
+            className="absolute -top-5 h-10 w-10 rounded-lg border-0"
             ariaLabel="Swap languages"
             title="Swap languages"
-          >
-            
-          </IconButton>
+            variant="primary"
+            children=" "
+          />
           <IconButton
-            className="absolute top-2 right-4.5 text-ctp-subtext0/50 hover:text-ctp-subtext1"
+            className="absolute top-2 right-4.5"
             soundCategory="toggleOn"
-          >
-            󰁨
-          </IconButton>
+            children="󰁨 "
+          />
           <textarea
             value={text}
             onChange={(e) => setText(e.target.value)}
