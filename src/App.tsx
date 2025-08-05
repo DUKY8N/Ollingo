@@ -70,7 +70,11 @@ const App = () => {
       <div className="relative flex h-1/2 w-full flex-col items-center p-2">
         <div className="relative flex w-full px-3 justify-center items-center">
           <div className="absolute left-2.5 flex gap-4">
-            <IconButton children=" " />
+            <IconButton
+              variant="danger"
+              children="󰅙 "
+              onClick={() => window.electronWindow.close()}
+            />
           </div>
           <LanguageInput
             value={to}
@@ -78,6 +82,7 @@ const App = () => {
             placeholder="To language"
           />
           <div className="absolute right-2.5 flex gap-4">
+            <IconButton children=" " />
             <IconButton
               soundCategory={isAlwaysOnTop ? "toggleOff" : "toggleOn"}
               children="󰐃"
@@ -86,11 +91,6 @@ const App = () => {
                 setIsAlwaysOnTop(!isAlwaysOnTop);
               }}
               isActive={isAlwaysOnTop}
-            />
-            <IconButton
-              variant="danger"
-              children="󰅙 "
-              onClick={() => window.electronWindow.close()}
             />
           </div>
         </div>
