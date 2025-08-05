@@ -15,6 +15,7 @@ const App = () => {
   const [from, setFrom] = useState(DEFAULT_LANGUAGES.from);
   const [to, setTo] = useState(DEFAULT_LANGUAGES.to);
   const [isAlwaysOnTop, setIsAlwaysOnTop] = useState(false);
+  const [isAutoClipboard, setIsAutoClipboard] = useState(false);
   const translation = useTranslation();
   const translationRef = useRef(translation);
 
@@ -30,6 +31,24 @@ const App = () => {
 
     initializeAlwaysOnTop();
   }, []);
+
+  useEffect(() => {
+    if (!isAutoClipboard) return;
+
+    const handleClipboardChange = (newText: string) => {
+      if (newText.trim() && newText !== text) {
+        setText(newText);
+      }
+    };
+
+    window.electronClipboard.onChanged(handleClipboardChange);
+    window.electronClipboard.startWatching();
+
+    return () => {
+      window.electronClipboard.stopWatching();
+      window.electronClipboard.removeAllListeners();
+    };
+  }, [isAutoClipboard, text]);
 
   useEffect(() => {
     if (!text.trim() || !from.trim() || !to.trim()) return;
@@ -105,8 +124,12 @@ const App = () => {
           />
           <IconButton
             className="absolute top-2 right-4.5"
-            soundCategory="toggleOn"
             children="󰁨 "
+            soundCategory={isAutoClipboard ? "toggleOff" : "toggleOn"}
+            onClick={() => setIsAutoClipboard(!isAutoClipboard)}
+            isActive={isAutoClipboard}
+            title="Auto-paste from clipboard"
+            ariaLabel="Toggle auto-paste from clipboard"
           />
           <textarea
             value={text}
