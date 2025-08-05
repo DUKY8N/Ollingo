@@ -40,8 +40,10 @@ const SOUND_CATEGORIES = {
 
 type SoundCategory = keyof typeof SOUND_CATEGORIES;
 
-const playSound = (category: SoundCategory) => {
-  const sounds = SOUND_CATEGORIES[category];
+const playSound = (category?: SoundCategory | "") => {
+  if (!category) return;
+
+  const sounds = SOUND_CATEGORIES[category as SoundCategory];
   const randomSound = sounds[Math.floor(Math.random() * sounds.length)];
   const audio = new Audio(`/src/assets/SND01-sounds/${randomSound}`);
   audio.play().catch(console.error);
@@ -64,6 +66,10 @@ function LanguageInput({
       placeholder={placeholder}
       className="rounded px-3 text-center text-sm text-ctp-subtext0 placeholder-ctp-overlay1 transition-colors hover:bg-ctp-lavender-50/10 hover:text-ctp-text focus:bg-ctp-lavender-50/10 focus:text-ctp-text"
       aria-label={placeholder}
+      onMouseEnter={() => playSound("tap")}
+      onClick={(e) => {
+        (e.target as HTMLInputElement).select();
+      }}
     />
   );
 }
@@ -74,7 +80,7 @@ function IconButton({
   children,
   ariaLabel,
   title,
-  soundCategory = "button",
+  soundCategory,
 }: {
   onClick?: () => void;
   className?: string;
@@ -187,7 +193,10 @@ function App() {
             placeholder="To language"
           />
           <div className="absolute right-2.5 flex gap-4">
-            <IconButton className="text-ctp-subtext0/50 hover:text-ctp-subtext1">
+            <IconButton
+              className="text-ctp-subtext0/50 hover:text-ctp-subtext1"
+              soundCategory="toggleOn"
+            >
               󰐃
             </IconButton>
             <IconButton className="text-ctp-subtext0/50 hover:text-ctp-red">
@@ -216,7 +225,10 @@ function App() {
           >
             
           </IconButton>
-          <IconButton className="absolute top-2 right-4.5 text-ctp-subtext0/50 hover:text-ctp-subtext1">
+          <IconButton
+            className="absolute top-2 right-4.5 text-ctp-subtext0/50 hover:text-ctp-subtext1"
+            soundCategory="toggleOn"
+          >
             󰁨
           </IconButton>
           <textarea
