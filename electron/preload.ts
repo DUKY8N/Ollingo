@@ -26,6 +26,9 @@ contextBridge.exposeInMainWorld("ipcRenderer", {
 });
 
 // Window control API
-contextBridge.exposeInMainWorld("window", {
+contextBridge.exposeInMainWorld("electronWindow", {
   close: () => ipcRenderer.invoke("window-close"),
+  setAlwaysOnTop: (alwaysOnTop: boolean) =>
+    ipcRenderer.invoke("window-set-always-on-top", alwaysOnTop),
+  isAlwaysOnTop: () => ipcRenderer.invoke("window-is-always-on-top"),
 });

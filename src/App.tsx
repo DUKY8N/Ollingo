@@ -14,12 +14,22 @@ const App = () => {
   const [text, setText] = useState("");
   const [from, setFrom] = useState(DEFAULT_LANGUAGES.from);
   const [to, setTo] = useState(DEFAULT_LANGUAGES.to);
+  const [isAlwaysOnTop, setIsAlwaysOnTop] = useState(false);
   const translation = useTranslation();
   const translationRef = useRef(translation);
 
   useEffect(() => {
     translationRef.current = translation;
   });
+
+  useEffect(() => {
+    const initializeAlwaysOnTop = async () => {
+      const state = await window.electronWindow.isAlwaysOnTop();
+      setIsAlwaysOnTop(state);
+    };
+
+    initializeAlwaysOnTop();
+  }, []);
 
   useEffect(() => {
     if (!text.trim() || !from.trim() || !to.trim()) return;
@@ -49,11 +59,19 @@ const App = () => {
             placeholder="To language"
           />
           <div className="absolute right-2.5 flex gap-4">
-            <IconButton soundCategory="toggleOn" children="󰐃" />
+            <IconButton
+              soundCategory={isAlwaysOnTop ? "toggleOff" : "toggleOn"}
+              children="󰐃"
+              onClick={async () => {
+                await window.electronWindow.setAlwaysOnTop(!isAlwaysOnTop);
+                setIsAlwaysOnTop(!isAlwaysOnTop);
+              }}
+              isActive={isAlwaysOnTop}
+            />
             <IconButton
               variant="danger"
               children="󰅙 "
-              onClick={() => window.window.close()}
+              onClick={() => window.electronWindow.close()}
             />
           </div>
         </div>

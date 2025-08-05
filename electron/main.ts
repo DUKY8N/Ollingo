@@ -76,8 +76,18 @@ app.on("activate", () => {
   }
 });
 
+// IPC handlers
 ipcMain.handle("window-close", () => {
   win?.close();
+});
+
+ipcMain.handle("window-set-always-on-top", (_, alwaysOnTop: boolean) => {
+  win?.setAlwaysOnTop(alwaysOnTop);
+  return win?.isAlwaysOnTop() || false;
+});
+
+ipcMain.handle("window-is-always-on-top", () => {
+  return win?.isAlwaysOnTop() || false;
 });
 
 app.whenReady().then(createWindow);
