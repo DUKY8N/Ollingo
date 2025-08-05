@@ -7,6 +7,11 @@ const DEFAULT_LANGUAGES = {
   to: "Korean",
 };
 
+const playSound = (soundFile: string) => {
+  const audio = new Audio(`/src/assets/SND01-sounds/${soundFile}`);
+  audio.play().catch(console.error);
+};
+
 function LanguageInput({
   value,
   onChange,
@@ -25,6 +30,43 @@ function LanguageInput({
       className="rounded px-3 text-center text-sm text-ctp-subtext0 placeholder-ctp-overlay1 transition-colors hover:bg-ctp-lavender-50/10 hover:text-ctp-text focus:bg-ctp-lavender-50/10 focus:text-ctp-text"
       aria-label={placeholder}
     />
+  );
+}
+
+function IconButton({
+  onClick,
+  className,
+  children,
+  ariaLabel,
+  title,
+}: {
+  onClick?: () => void;
+  className?: string;
+  children: React.ReactNode;
+  ariaLabel?: string;
+  title?: string;
+}) {
+  return (
+    <button
+      onClick={() => {
+        onClick?.();
+        const tapSounds = [
+          "tap_01.wav",
+          "tap_02.wav",
+          "tap_03.wav",
+          "tap_04.wav",
+          "tap_05.wav",
+        ];
+        const randomTap =
+          tapSounds[Math.floor(Math.random() * tapSounds.length)];
+        playSound(randomTap);
+      }}
+      className={`cursor-pointer transition-colors ${className || ""}`}
+      aria-label={ariaLabel}
+      title={title}
+    >
+      {children}
+    </button>
   );
 }
 
@@ -101,19 +143,14 @@ function App() {
     setTo(from);
   };
 
-  const playSound = (soundFile: string) => {
-    const audio = new Audio(`/src/assets/SND01-sounds/${soundFile}`);
-    audio.play().catch(console.error);
-  };
-
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center p-2">
       <div className="relative flex h-1/2 w-full flex-col items-center p-2">
         <div className="relative flex w-full px-3 justify-center items-center">
           <div className="absolute left-2.5 flex gap-4">
-            <button className="text-ctp-subtext0/50 hover:text-ctp-subtext1 cursor-pointer transition-colors">
+            <IconButton className="text-ctp-subtext0/50 hover:text-ctp-subtext1">
               
-            </button>
+            </IconButton>
           </div>
           <LanguageInput
             value={to}
@@ -121,18 +158,18 @@ function App() {
             placeholder="To language"
           />
           <div className="absolute right-2.5 flex gap-4">
-            <button className="text-ctp-subtext0/50 hover:text-ctp-subtext1 cursor-pointer transition-colors">
+            <IconButton className="text-ctp-subtext0/50 hover:text-ctp-subtext1">
               󰐃
-            </button>
-            <button className="text-ctp-subtext0/50 hover:text-ctp-red cursor-pointer transition-colors">
+            </IconButton>
+            <IconButton className="text-ctp-subtext0/50 hover:text-ctp-red">
               󰅙
-            </button>
+            </IconButton>
           </div>
         </div>
         <TranslationStatus translation={translation} />
-        <button className="absolute bottom-2 right-4.5 text-ctp-subtext0/50 hover:text-ctp-subtext1 cursor-pointer transition-colors">
+        <IconButton className="absolute bottom-2 right-4.5 text-ctp-subtext0/50 hover:text-ctp-subtext1">
           󰅍
-        </button>
+        </IconButton>
       </div>
 
       <div className="relative h-1/2 w-full">
@@ -142,17 +179,17 @@ function App() {
         </div>
 
         <div className="relative flex h-full w-full flex-col items-center gap-2 p-2">
-          <button
+          <IconButton
             onClick={swapLanguages}
-            className="absolute -top-5 h-10 w-10 cursor-pointer rounded-lg border-0 text-ctp-subtext0 transition-colors hover:text-ctp-blue-500"
-            aria-label="Swap languages"
+            className="absolute -top-5 h-10 w-10 rounded-lg border-0 text-ctp-subtext0 hover:text-ctp-blue-500"
+            ariaLabel="Swap languages"
             title="Swap languages"
           >
             
-          </button>
-          <button className="absolute top-2 right-4.5 text-ctp-subtext0/50 hover:text-ctp-subtext1 cursor-pointer transition-colors">
+          </IconButton>
+          <IconButton className="absolute top-2 right-4.5 text-ctp-subtext0/50 hover:text-ctp-subtext1">
             󰁨
-          </button>
+          </IconButton>
           <textarea
             value={text}
             onChange={(e) => setText(e.target.value)}
