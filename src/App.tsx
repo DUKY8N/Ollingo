@@ -1,20 +1,19 @@
-import { useEffect, useRef } from "react";
 import { motion } from "motion/react";
-import useTranslation from "./hooks/useTranslation";
-import { useTranslationStore } from "./store/useTranslationStore";
-import { useSettingsStore } from "./store/useSettingsStore";
-import { useUIStore } from "./store/useUIStore";
+import useTranslationStore from "./stores/useTranslationStore";
+import useSettingsStore from "./stores/useSettingsStore";
+import useUIStore from "./stores/useUIStore";
+import useClipboardWatcher from "./hooks/useClipboardWatcher";
+import useLanguageSwitch from "./hooks/useLanguageSwitch";
+import useAutoTranslation from "./hooks/useAutoTranslation";
+import useWindowState from "./hooks/useWindowState";
 import LanguageInput from "./components/LanguageInput";
 import IconButton from "./components/IconButton";
 import TranslationStatus from "./components/TranslationStatus";
 
 import { playSound } from "./utils/sound";
 
-const DEBOUNCE_DELAY = 500;
-
 const App = () => {
-  const { text, from, to, setText, setFrom, setTo, swapLanguages } =
-    useTranslationStore();
+  const { text, from, to, setText, setFrom, setTo } = useTranslationStore();
   const {
     isAlwaysOnTop,
     isAutoClipboard,
@@ -27,54 +26,18 @@ const App = () => {
     isLanguageAnimating,
     setIsSwitchHovered,
     setIsSwitchPressed,
-    setIsLanguageAnimating,
   } = useUIStore();
 
-  const translation = useTranslation();
-  const translationRef = useRef(translation);
-  const switchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const translation = useAutoTranslation({ text, from, to });
+  const { handleLanguageSwitch } = useLanguageSwitch();
 
-  useEffect(() => {
-    translationRef.current = translation;
+  useClipboardWatcher({
+    isEnabled: isAutoClipboard,
+    currentText: text,
+    onTextChange: setText,
   });
 
-  useEffect(() => {
-    const initializeAlwaysOnTop = async () => {
-      const state = await window.electronWindow.isAlwaysOnTop();
-      setIsAlwaysOnTop(state);
-    };
-    initializeAlwaysOnTop();
-  }, [setIsAlwaysOnTop]);
-
-  useEffect(() => {
-    if (!isAutoClipboard) return;
-
-    const handleClipboardChange = (newText: string) => {
-      if (newText.trim() && newText !== text) {
-        setText(newText);
-      }
-    };
-
-    window.electronClipboard.onChanged(handleClipboardChange);
-    window.electronClipboard.startWatching();
-
-    return () => {
-      window.electronClipboard.stopWatching();
-      window.electronClipboard.removeAllListeners();
-    };
-  }, [isAutoClipboard, text, setText]);
-
-  useEffect(() => {
-    if (!text.trim() || !from.trim() || !to.trim()) return;
-
-    const currentParams = { text, from, to };
-
-    const timer = setTimeout(() => {
-      translationRef.current.mutate(currentParams);
-    }, DEBOUNCE_DELAY);
-
-    return () => clearTimeout(timer);
-  }, [text, from, to]);
+  useWindowState({ setIsAlwaysOnTop });
 
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center p-2">
@@ -136,17 +99,7 @@ const App = () => {
 
         <div className="relative flex h-full w-full flex-col items-center gap-2 p-2">
           <motion.button
-            onClick={() => {
-              swapLanguages();
-              setIsLanguageAnimating(true);
-
-              if (switchTimeoutRef.current)
-                clearTimeout(switchTimeoutRef.current);
-
-              switchTimeoutRef.current = setTimeout(() => {
-                setIsLanguageAnimating(false);
-              }, 600);
-            }}
+            onClick={handleLanguageSwitch}
             onMouseDown={() => setIsSwitchPressed(true)}
             onMouseUp={() => setIsSwitchPressed(false)}
             onMouseEnter={() => {

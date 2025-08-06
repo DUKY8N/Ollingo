@@ -8,11 +8,13 @@ interface SettingsState {
   setIsAutoClipboard: (isAutoClipboard: boolean) => void;
 }
 
-export const useSettingsStore = create<SettingsState>()((set) => ({
+const useSettingsStore = create<SettingsState>()((set) => ({
   isAlwaysOnTop: false,
   isAutoClipboard: false,
 
   setIsAlwaysOnTop: (isAlwaysOnTop) => set({ isAlwaysOnTop }),
   setIsAutoClipboard: (isAutoClipboard) => set({ isAutoClipboard }),
 }));
+
+export default useSettingsStore;
 

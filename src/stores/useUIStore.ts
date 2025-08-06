@@ -10,7 +10,7 @@ interface UIState {
   setIsLanguageAnimating: (isLanguageAnimating: boolean) => void;
 }
 
-export const useUIStore = create<UIState>()((set) => ({
+const useUIStore = create<UIState>()((set) => ({
   isSwitchHovered: false,
   isSwitchPressed: false,
   isLanguageAnimating: false,
@@ -19,4 +19,6 @@ export const useUIStore = create<UIState>()((set) => ({
   setIsSwitchPressed: (isSwitchPressed) => set({ isSwitchPressed }),
   setIsLanguageAnimating: (isLanguageAnimating) => set({ isLanguageAnimating }),
 }));
+
+export default useUIStore;
 

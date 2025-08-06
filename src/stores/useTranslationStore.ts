@@ -16,7 +16,7 @@ const DEFAULT_LANGUAGES = {
   to: "Korean",
 };
 
-export const useTranslationStore = create<TranslationState>()((set) => ({
+const useTranslationStore = create<TranslationState>()((set) => ({
   text: "",
   from: DEFAULT_LANGUAGES.from,
   to: DEFAULT_LANGUAGES.to,
@@ -26,4 +26,6 @@ export const useTranslationStore = create<TranslationState>()((set) => ({
   setTo: (to) => set({ to }),
   swapLanguages: () => set((state) => ({ from: state.to, to: state.from })),
 }));
+
+export default useTranslationStore;
 
