@@ -20,6 +20,8 @@ const App = () => {
   const [isAutoClipboard, setIsAutoClipboard] = useState(false);
   const [isSwitchHovered, setIsSwitchHovered] = useState(false);
   const [isSwitchPressed, setIsSwitchPressed] = useState(false);
+  const [isLanguageAnimating, setIsLanguageAnimating] = useState(false);
+  const switchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const translation = useTranslation();
   const translationRef = useRef(translation);
 
@@ -84,6 +86,7 @@ const App = () => {
             value={to}
             onChange={setTo}
             placeholder="To language"
+            triggerAnimation={isLanguageAnimating}
           />
           <div className="absolute right-2.5 flex gap-4">
             <IconButton children=" " />
@@ -130,7 +133,17 @@ const App = () => {
           <motion.button
             onClick={() => {
               swapLanguages();
+              setIsLanguageAnimating(true);
+
+              if (switchTimeoutRef.current)
+                clearTimeout(switchTimeoutRef.current);
+
+              switchTimeoutRef.current = setTimeout(() => {
+                setIsLanguageAnimating(false);
+              }, 600);
             }}
+            onMouseDown={() => setIsSwitchPressed(true)}
+            onMouseUp={() => setIsSwitchPressed(false)}
             onMouseEnter={() => {
               playSound("tap");
               setIsSwitchHovered(true);
@@ -139,8 +152,6 @@ const App = () => {
               setIsSwitchHovered(false);
               setIsSwitchPressed(false);
             }}
-            onMouseDown={() => setIsSwitchPressed(true)}
-            onMouseUp={() => setIsSwitchPressed(false)}
             className="absolute -top-5 h-10 w-10 rounded-lg border-0 cursor-pointer transition-colors text-ctp-subtext0 hover:text-ctp-blue-500"
             aria-label="Swap languages"
             title="Swap languages"
@@ -170,6 +181,7 @@ const App = () => {
             value={from}
             onChange={setFrom}
             placeholder="From language"
+            triggerAnimation={isLanguageAnimating}
           />
         </div>
       </div>
