@@ -45,8 +45,8 @@ const App = () => {
         <div className="relative flex w-full px-3 justify-center items-center">
           <div className="absolute left-2.5 flex gap-4">
             <IconButton
-              variant="danger"
               children="󰅙 "
+              variant="danger"
               onClick={() => window.electronWindow.close()}
             />
           </div>
@@ -59,21 +59,21 @@ const App = () => {
           <div className="absolute right-2.5 flex gap-4">
             <IconButton children=" " />
             <IconButton
-              soundCategory={isAlwaysOnTop ? "toggleOff" : "toggleOn"}
               children="󰐃"
               onClick={async () => {
                 await window.electronWindow.setAlwaysOnTop(!isAlwaysOnTop);
                 setIsAlwaysOnTop(!isAlwaysOnTop);
               }}
               isActive={isAlwaysOnTop}
+              soundCategory={isAlwaysOnTop ? "toggleOff" : "toggleOn"}
             />
           </div>
         </div>
 
         <TranslationStatus translation={translation} />
         <IconButton
-          className="absolute bottom-2 right-4.5"
           children="󰅍 "
+          className="absolute bottom-2 right-4.5"
           onClick={() => {
             if (translation.data) {
               window.electronClipboard.writeText(translation.data);
@@ -99,6 +99,7 @@ const App = () => {
 
         <div className="relative flex h-full w-full flex-col items-center gap-2 p-2">
           <motion.button
+            children=" "
             onClick={handleLanguageSwitch}
             onMouseDown={() => setIsSwitchPressed(true)}
             onMouseUp={() => setIsSwitchPressed(false)}
@@ -117,14 +118,13 @@ const App = () => {
               scale: 0.95,
               transition: { duration: 0.1 },
             }}
-            children=" "
           />
           <IconButton
-            className="absolute top-2 right-4.5"
             children="󰁨 "
-            soundCategory={isAutoClipboard ? "toggleOff" : "toggleOn"}
+            className="absolute top-2 right-4.5"
             onClick={() => setIsAutoClipboard(!isAutoClipboard)}
             isActive={isAutoClipboard}
+            soundCategory={isAutoClipboard ? "toggleOff" : "toggleOn"}
             title="Auto-paste from clipboard"
             ariaLabel="Toggle auto-paste from clipboard"
           />
