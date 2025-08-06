@@ -1,7 +1,7 @@
-import useTranslation from "../hooks/useTranslation";
+import useAutoTranslation from "../hooks/useAutoTranslation";
 
 interface TranslationStatusProps {
-  translation: ReturnType<typeof useTranslation>;
+  translation: ReturnType<typeof useAutoTranslation>;
 }
 
 const TranslationStatus = ({ translation }: TranslationStatusProps) => {
@@ -48,4 +48,3 @@ const TranslationStatus = ({ translation }: TranslationStatusProps) => {
 };
 
 export default TranslationStatus;
-
