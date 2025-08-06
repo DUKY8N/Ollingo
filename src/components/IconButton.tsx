@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "motion/react";
 import { playSound, SoundCategory } from "../utils/sound";
 
 type ColorVariant = "default" | "primary" | "danger" | "active";
@@ -39,7 +40,7 @@ const IconButton = ({
   const colorClasses = getColorClasses();
 
   return (
-    <button
+    <motion.button
       onClick={() => {
         onClick?.();
         playSound(soundCategory);
@@ -48,9 +49,17 @@ const IconButton = ({
       className={`cursor-pointer transition-colors ${colorClasses} ${className || ""}`}
       aria-label={ariaLabel}
       title={title}
+      whileHover={{
+        scale: 1.1,
+        transition: { duration: 0.2 },
+      }}
+      whileTap={{
+        scale: 0.95,
+        transition: { duration: 0.1 },
+      }}
     >
       {children}
-    </button>
+    </motion.button>
   );
 };
 

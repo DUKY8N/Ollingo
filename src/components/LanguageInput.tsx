@@ -1,3 +1,4 @@
+import { motion } from "motion/react";
 import { playSound } from "../utils/sound";
 
 interface LanguageInputProps {
@@ -12,7 +13,7 @@ const LanguageInput = ({
   placeholder,
 }: LanguageInputProps) => {
   return (
-    <input
+    <motion.input
       type="text"
       value={value}
       onChange={(e) => onChange(e.target.value)}
@@ -23,9 +24,16 @@ const LanguageInput = ({
       onClick={(e) => {
         (e.target as HTMLInputElement).select();
       }}
+      whileHover={{
+        scale: 1.05,
+        transition: { duration: 0.2 },
+      }}
+      whileFocus={{
+        scale: 1.05,
+        transition: { duration: 0.2 },
+      }}
     />
   );
 };
 
 export default LanguageInput;
-
