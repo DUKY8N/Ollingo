@@ -1,8 +1,10 @@
 import { useState, useEffect, useRef } from "react";
+import { motion } from "motion/react";
 import useTranslation from "./hooks/useTranslation";
 import LanguageInput from "./components/LanguageInput";
 import IconButton from "./components/IconButton";
 import TranslationStatus from "./components/TranslationStatus";
+import { playSound } from "./utils/sound";
 
 const DEBOUNCE_DELAY = 500;
 const DEFAULT_LANGUAGES = {
@@ -16,6 +18,8 @@ const App = () => {
   const [to, setTo] = useState(DEFAULT_LANGUAGES.to);
   const [isAlwaysOnTop, setIsAlwaysOnTop] = useState(false);
   const [isAutoClipboard, setIsAutoClipboard] = useState(false);
+  const [isSwitchHovered, setIsSwitchHovered] = useState(false);
+  const [isSwitchPressed, setIsSwitchPressed] = useState(false);
   const translation = useTranslation();
   const translationRef = useRef(translation);
 
@@ -110,16 +114,40 @@ const App = () => {
       <div className="relative h-1/2 w-full">
         <div className="absolute inset-0 opacity-10">
           <div className="h-full w-full rounded bg-ctp-lavender-50" />
-          <div className="absolute -top-5 left-1/2 h-10 w-10 -translate-x-1/2 rounded-xl border-3 border-ctp-base bg-ctp-lavender-50" />
+          <motion.div
+            className={`
+              absolute -top-5 left-1/2 h-10 w-10 -translate-x-1/2 rounded-xl border-3 border-ctp-base transition-colors duration-200
+              ${isSwitchHovered ? "bg-ctp-blue" : "bg-ctp-lavender-50"}
+            `}
+            animate={{
+              scale: isSwitchPressed ? 0.95 : 1,
+              transition: { duration: isSwitchPressed ? 0.1 : 0.2 },
+            }}
+          />
         </div>
 
         <div className="relative flex h-full w-full flex-col items-center gap-2 p-2">
-          <IconButton
-            onClick={swapLanguages}
-            className="absolute -top-5 h-10 w-10 rounded-lg border-0"
-            ariaLabel="Swap languages"
+          <motion.button
+            onClick={() => {
+              swapLanguages();
+            }}
+            onMouseEnter={() => {
+              playSound("tap");
+              setIsSwitchHovered(true);
+            }}
+            onMouseLeave={() => {
+              setIsSwitchHovered(false);
+              setIsSwitchPressed(false);
+            }}
+            onMouseDown={() => setIsSwitchPressed(true)}
+            onMouseUp={() => setIsSwitchPressed(false)}
+            className="absolute -top-5 h-10 w-10 rounded-lg border-0 cursor-pointer transition-colors text-ctp-subtext0 hover:text-ctp-blue-500"
+            aria-label="Swap languages"
             title="Swap languages"
-            variant="primary"
+            whileTap={{
+              scale: 0.95,
+              transition: { duration: 0.1 },
+            }}
             children=" "
           />
           <IconButton
