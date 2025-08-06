@@ -33,11 +33,6 @@ const App = () => {
   const translation = useTranslation();
   const translationRef = useRef(translation);
   const switchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const lastTranslationParamsRef = useRef<{
-    text: string;
-    from: string;
-    to: string;
-  } | null>(null);
 
   useEffect(() => {
     translationRef.current = translation;
@@ -73,19 +68,8 @@ const App = () => {
     if (!text.trim() || !from.trim() || !to.trim()) return;
 
     const currentParams = { text, from, to };
-    const lastParams = lastTranslationParamsRef.current;
-
-    if (
-      lastParams &&
-      lastParams.text === currentParams.text &&
-      lastParams.from === currentParams.from &&
-      lastParams.to === currentParams.to
-    ) {
-      return;
-    }
 
     const timer = setTimeout(() => {
-      lastTranslationParamsRef.current = currentParams;
       translationRef.current.mutate(currentParams);
     }, DEBOUNCE_DELAY);
 
