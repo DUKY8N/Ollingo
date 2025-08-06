@@ -18,7 +18,12 @@ const useAutoTranslation = ({ text, from, to }: UseAutoTranslationProps) => {
   });
 
   useEffect(() => {
-    if (!text.trim() || !from.trim() || !to.trim()) return;
+    if (!text.trim() || !from.trim() || !to.trim()) {
+      if (!text.trim()) {
+        translationRef.current.reset();
+      }
+      return;
+    }
 
     const currentParams = { text, from, to };
 

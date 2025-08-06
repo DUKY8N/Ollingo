@@ -129,7 +129,7 @@ const App = () => {
           <textarea
             value={text}
             onChange={(e) => setText(e.target.value)}
-            placeholder="Enter text to translate..."
+            placeholder="Enter text..."
             className="mt-4 h-full w-full resize-none p-3 text-lg text-ctp-text placeholder-ctp-overlay1"
             aria-label="Text to translate"
           />

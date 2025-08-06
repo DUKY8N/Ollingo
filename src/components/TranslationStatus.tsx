@@ -42,7 +42,7 @@ const TranslationStatus = ({ translation }: TranslationStatusProps) => {
 
   return (
     <div className="mb-4 h-full w-full p-3 text-lg text-ctp-overlay0">
-      <p>Enter text to see translation</p>
+      <p>Translation</p>
     </div>
   );
 };
