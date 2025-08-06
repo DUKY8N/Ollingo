@@ -15,7 +15,8 @@
     "motion": "^12.23.12",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "tailwindcss": "^4.1.11"
+    "tailwindcss": "^4.1.11",
+    "zustand": "^5.0.7"
   },
   "devDependencies": {
     "@catppuccin/tailwindcss": "^1.0.0",

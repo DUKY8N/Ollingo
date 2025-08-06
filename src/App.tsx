@@ -1,29 +1,43 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { motion } from "motion/react";
 import useTranslation from "./hooks/useTranslation";
+import { useTranslationStore } from "./store/useTranslationStore";
+import { useSettingsStore } from "./store/useSettingsStore";
+import { useUIStore } from "./store/useUIStore";
 import LanguageInput from "./components/LanguageInput";
 import IconButton from "./components/IconButton";
 import TranslationStatus from "./components/TranslationStatus";
+
 import { playSound } from "./utils/sound";
 
 const DEBOUNCE_DELAY = 500;
-const DEFAULT_LANGUAGES = {
-  from: "English",
-  to: "Korean",
-};
 
 const App = () => {
-  const [text, setText] = useState("");
-  const [from, setFrom] = useState(DEFAULT_LANGUAGES.from);
-  const [to, setTo] = useState(DEFAULT_LANGUAGES.to);
-  const [isAlwaysOnTop, setIsAlwaysOnTop] = useState(false);
-  const [isAutoClipboard, setIsAutoClipboard] = useState(false);
-  const [isSwitchHovered, setIsSwitchHovered] = useState(false);
-  const [isSwitchPressed, setIsSwitchPressed] = useState(false);
-  const [isLanguageAnimating, setIsLanguageAnimating] = useState(false);
-  const switchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const { text, from, to, setText, setFrom, setTo, swapLanguages } =
+    useTranslationStore();
+  const {
+    isAlwaysOnTop,
+    isAutoClipboard,
+    setIsAlwaysOnTop,
+    setIsAutoClipboard,
+  } = useSettingsStore();
+  const {
+    isSwitchHovered,
+    isSwitchPressed,
+    isLanguageAnimating,
+    setIsSwitchHovered,
+    setIsSwitchPressed,
+    setIsLanguageAnimating,
+  } = useUIStore();
+
   const translation = useTranslation();
   const translationRef = useRef(translation);
+  const switchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const lastTranslationParamsRef = useRef<{
+    text: string;
+    from: string;
+    to: string;
+  } | null>(null);
 
   useEffect(() => {
     translationRef.current = translation;
@@ -34,9 +48,8 @@ const App = () => {
       const state = await window.electronWindow.isAlwaysOnTop();
       setIsAlwaysOnTop(state);
     };
-
     initializeAlwaysOnTop();
-  }, []);
+  }, [setIsAlwaysOnTop]);
 
   useEffect(() => {
     if (!isAutoClipboard) return;
@@ -54,22 +67,30 @@ const App = () => {
       window.electronClipboard.stopWatching();
       window.electronClipboard.removeAllListeners();
     };
-  }, [isAutoClipboard, text]);
+  }, [isAutoClipboard, text, setText]);
 
   useEffect(() => {
     if (!text.trim() || !from.trim() || !to.trim()) return;
 
+    const currentParams = { text, from, to };
+    const lastParams = lastTranslationParamsRef.current;
+
+    if (
+      lastParams &&
+      lastParams.text === currentParams.text &&
+      lastParams.from === currentParams.from &&
+      lastParams.to === currentParams.to
+    ) {
+      return;
+    }
+
     const timer = setTimeout(() => {
-      translationRef.current.mutate({ text, from, to });
+      lastTranslationParamsRef.current = currentParams;
+      translationRef.current.mutate(currentParams);
     }, DEBOUNCE_DELAY);
 
     return () => clearTimeout(timer);
   }, [text, from, to]);
-
-  const swapLanguages = () => {
-    setFrom(to);
-    setTo(from);
-  };
 
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center p-2">
