@@ -2,9 +2,23 @@ import { app, BrowserWindow, ipcMain, clipboard } from "electron";
 import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
+import Store from "electron-store";
 
 const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// Settings store
+interface Settings {
+  isAlwaysOnTop: boolean;
+  isAutoClipboard: boolean;
+}
+
+const store = new Store<Settings>({
+  defaults: {
+    isAlwaysOnTop: false,
+    isAutoClipboard: false,
+  },
+});
 
 // The built directory structure
 //
@@ -40,6 +54,10 @@ function createWindow() {
       preload: path.join(__dirname, "preload.mjs"),
     },
   });
+
+  // Apply saved alwaysOnTop setting
+  const savedAlwaysOnTop = store.get("isAlwaysOnTop");
+  win.setAlwaysOnTop(savedAlwaysOnTop);
 
   // Test active push message to Renderer-process.
   win.webContents.on("did-finish-load", () => {
@@ -123,6 +141,23 @@ ipcMain.handle("clipboard-start-watching", () => {
 
 ipcMain.handle("clipboard-stop-watching", () => {
   isClipboardWatching = false;
+});
+
+// Settings handlers
+ipcMain.handle("settings-get", (_, key: keyof Settings) => {
+  return store.get(key);
+});
+
+ipcMain.handle("settings-set", (_, key: keyof Settings, value: boolean) => {
+  store.set(key, value);
+  return value;
+});
+
+ipcMain.handle("settings-get-all", () => {
+  return {
+    isAlwaysOnTop: store.get("isAlwaysOnTop"),
+    isAutoClipboard: store.get("isAutoClipboard"),
+  };
 });
 
 app.whenReady().then(() => {

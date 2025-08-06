@@ -15,13 +15,34 @@ declare namespace NodeJS {
      * │
      * ```
      */
-    APP_ROOT: string
+    APP_ROOT: string;
     /** /dist/ or /public/ */
-    VITE_PUBLIC: string
+    VITE_PUBLIC: string;
   }
 }
 
 // Used in Renderer process, expose in `preload.ts`
 interface Window {
-  ipcRenderer: import('electron').IpcRenderer
+  ipcRenderer: import("electron").IpcRenderer;
+  electronWindow: {
+    close: () => Promise<void>;
+    setAlwaysOnTop: (alwaysOnTop: boolean) => Promise<boolean>;
+    isAlwaysOnTop: () => Promise<boolean>;
+  };
+  electronClipboard: {
+    writeText: (text: string) => Promise<void>;
+    readText: () => Promise<string>;
+    startWatching: () => Promise<string>;
+    stopWatching: () => Promise<void>;
+    onChanged: (callback: (text: string) => void) => void;
+    removeAllListeners: () => void;
+  };
+  electronSettings: {
+    get: (key: "isAlwaysOnTop" | "isAutoClipboard") => Promise<boolean>;
+    set: (
+      key: "isAlwaysOnTop" | "isAutoClipboard",
+      value: boolean,
+    ) => Promise<boolean>;
+    getAll: () => Promise<{ isAlwaysOnTop: boolean; isAutoClipboard: boolean }>;
+  };
 }

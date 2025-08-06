@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 import useTranslationStore from "./stores/useTranslationStore";
-import useSettingsStore from "./stores/useSettingsStore";
 import useUIStore from "./stores/useUIStore";
+import useSettingsStore from "./stores/useSettingsStore";
 import useClipboardWatcher from "./hooks/useClipboardWatcher";
 import useLanguageSwitch from "./hooks/useLanguageSwitch";
 import useAutoTranslation from "./hooks/useAutoTranslation";
@@ -14,12 +14,9 @@ import { playSound } from "./utils/sound";
 
 const App = () => {
   const { text, from, to, setText, setFrom, setTo } = useTranslationStore();
-  const {
-    isAlwaysOnTop,
-    isAutoClipboard,
-    setIsAlwaysOnTop,
-    setIsAutoClipboard,
-  } = useSettingsStore();
+  const [isAlwaysOnTop, setIsAlwaysOnTop] = useSettingsStore("isAlwaysOnTop");
+  const [isAutoClipboard, setIsAutoClipboard] =
+    useSettingsStore("isAutoClipboard");
   const {
     isSwitchHovered,
     isSwitchPressed,
@@ -61,8 +58,9 @@ const App = () => {
             <IconButton
               children="󰐃"
               onClick={async () => {
-                await window.electronWindow.setAlwaysOnTop(!isAlwaysOnTop);
-                setIsAlwaysOnTop(!isAlwaysOnTop);
+                const newValue = !isAlwaysOnTop;
+                await window.electronWindow.setAlwaysOnTop(newValue);
+                await setIsAlwaysOnTop(newValue);
               }}
               isActive={isAlwaysOnTop}
               soundCategory={isAlwaysOnTop ? "toggleOff" : "toggleOn"}

@@ -46,3 +46,12 @@ contextBridge.exposeInMainWorld("electronClipboard", {
     ipcRenderer.removeAllListeners("clipboard-changed");
   },
 });
+
+// Settings API
+contextBridge.exposeInMainWorld("electronSettings", {
+  get: (key: "isAlwaysOnTop" | "isAutoClipboard") =>
+    ipcRenderer.invoke("settings-get", key),
+  set: (key: "isAlwaysOnTop" | "isAutoClipboard", value: boolean) =>
+    ipcRenderer.invoke("settings-set", key, value),
+  getAll: () => ipcRenderer.invoke("settings-get-all"),
+});
