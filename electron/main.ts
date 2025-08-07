@@ -84,6 +84,7 @@ function createWindow() {
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on("window-all-closed", () => {
+  stopClipboardMonitoring();
   if (process.platform !== "darwin") {
     app.quit();
     win = null;
@@ -124,27 +125,49 @@ ipcMain.handle("clipboard-read-text", () => {
 // Clipboard change monitoring
 let lastClipboardContent = "";
 let isClipboardWatching = false;
+let clipboardMonitoringInterval: NodeJS.Timeout | null = null;
 
 const startClipboardMonitoring = () => {
-  setInterval(() => {
+  if (clipboardMonitoringInterval) {
+    clearInterval(clipboardMonitoringInterval);
+  }
+
+  clipboardMonitoringInterval = setInterval(() => {
     if (!isClipboardWatching) return;
 
-    const currentContent = clipboard.readText();
-    if (currentContent !== lastClipboardContent) {
-      lastClipboardContent = currentContent;
-      win?.webContents.send("clipboard-changed", currentContent);
+    try {
+      if (!win || win.isDestroyed()) return;
+
+      const currentContent = clipboard.readText();
+      if (currentContent !== lastClipboardContent) {
+        lastClipboardContent = currentContent;
+        win.webContents.send("clipboard-changed", currentContent);
+      }
+    } catch (error) {
+      console.error("Clipboard monitoring error:", error);
     }
   }, 500);
+};
+
+const stopClipboardMonitoring = () => {
+  isClipboardWatching = false;
+  if (clipboardMonitoringInterval) {
+    clearInterval(clipboardMonitoringInterval);
+    clipboardMonitoringInterval = null;
+  }
 };
 
 ipcMain.handle("clipboard-start-watching", () => {
   isClipboardWatching = true;
   lastClipboardContent = clipboard.readText();
+  if (!clipboardMonitoringInterval) {
+    startClipboardMonitoring();
+  }
   return lastClipboardContent;
 });
 
 ipcMain.handle("clipboard-stop-watching", () => {
-  isClipboardWatching = false;
+  stopClipboardMonitoring();
 });
 
 // Settings handlers
@@ -152,13 +175,14 @@ ipcMain.handle("settings-get", (_, key: keyof Settings) => {
   return store.get(key);
 });
 
-ipcMain.handle("settings-set", (_, key: keyof Settings, value: boolean | string) => {
-  store.set(key, value);
-  return value;
-});
-
+ipcMain.handle(
+  "settings-set",
+  (_, key: keyof Settings, value: boolean | string) => {
+    store.set(key, value);
+    return value;
+  },
+);
 
 app.whenReady().then(() => {
   createWindow();
-  startClipboardMonitoring();
 });

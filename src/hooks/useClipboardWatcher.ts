@@ -12,7 +12,7 @@ const useClipboardWatcher = ({
   onTextChange,
 }: UseClipboardWatcherProps) => {
   useEffect(() => {
-    if (!isEnabled) return;
+    if (!isEnabled || !window.electronClipboard) return;
 
     const handleClipboardChange = (newText: string) => {
       if (newText.trim() && newText !== currentText) {
@@ -20,14 +20,26 @@ const useClipboardWatcher = ({
       }
     };
 
-    window.electronClipboard.onChanged(handleClipboardChange);
-    window.electronClipboard.startWatching();
+    try {
+      window.electronClipboard.onChanged(handleClipboardChange);
+      window.electronClipboard.startWatching();
+    } catch (error) {
+      console.error("Failed to start clipboard watching:", error);
+      return;
+    }
 
     return () => {
-      window.electronClipboard.stopWatching();
-      window.electronClipboard.removeAllListeners();
+      try {
+        if (window.electronClipboard) {
+          window.electronClipboard.stopWatching();
+          window.electronClipboard.removeAllListeners();
+        }
+      } catch (error) {
+        console.error("Failed to cleanup clipboard watcher:", error);
+      }
     };
   }, [isEnabled, currentText, onTextChange]);
 };
 
 export default useClipboardWatcher;
+
