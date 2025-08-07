@@ -33,7 +33,7 @@ const App = () => {
 
   useEffect(() => {
     initializeLanguages();
-  }, []);
+  }, [initializeLanguages]);
 
   useClipboardWatcher({
     isEnabled: isAutoClipboard,
