@@ -1,7 +1,11 @@
+import { useEffect } from "react";
 import { motion } from "motion/react";
 import useTranslationStore from "./stores/useTranslationStore";
 import useUIStore from "./stores/useUIStore";
-import { useIsAlwaysOnTop, useIsAutoClipboard } from "./stores/useSettingsStore";
+import {
+  useIsAlwaysOnTop,
+  useIsAutoClipboard,
+} from "./stores/useSettingsStore";
 import useClipboardWatcher from "./hooks/useClipboardWatcher";
 import useLanguageSwitch from "./hooks/useLanguageSwitch";
 import useAutoTranslation from "./hooks/useAutoTranslation";
@@ -12,7 +16,8 @@ import TranslationStatus from "./components/TranslationStatus";
 import { playSound } from "./utils/sound";
 
 const App = () => {
-  const { text, from, to, setText, setFrom, setTo } = useTranslationStore();
+  const { text, from, to, setText, setFrom, setTo, initializeLanguages } =
+    useTranslationStore();
   const [isAlwaysOnTop, setIsAlwaysOnTop] = useIsAlwaysOnTop();
   const [isAutoClipboard, setIsAutoClipboard] = useIsAutoClipboard();
   const {
@@ -26,12 +31,15 @@ const App = () => {
   const translation = useAutoTranslation({ text, from, to });
   const { handleLanguageSwitch } = useLanguageSwitch();
 
+  useEffect(() => {
+    initializeLanguages();
+  }, []);
+
   useClipboardWatcher({
     isEnabled: isAutoClipboard,
     currentText: text,
     onTextChange: setText,
   });
-
 
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center p-2">

@@ -11,12 +11,16 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 interface Settings {
   isAlwaysOnTop: boolean;
   isAutoClipboard: boolean;
+  fromLanguage: string;
+  toLanguage: string;
 }
 
 const store = new Store<Settings>({
   defaults: {
     isAlwaysOnTop: false,
     isAutoClipboard: false,
+    fromLanguage: "English",
+    toLanguage: "Korean",
   },
 });
 
@@ -148,7 +152,7 @@ ipcMain.handle("settings-get", (_, key: keyof Settings) => {
   return store.get(key);
 });
 
-ipcMain.handle("settings-set", (_, key: keyof Settings, value: boolean) => {
+ipcMain.handle("settings-set", (_, key: keyof Settings, value: boolean | string) => {
   store.set(key, value);
   return value;
 });

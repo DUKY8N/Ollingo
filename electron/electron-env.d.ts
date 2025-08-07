@@ -38,10 +38,9 @@ interface Window {
     removeAllListeners: () => void;
   };
   electronSettings: {
-    get: (key: "isAlwaysOnTop" | "isAutoClipboard") => Promise<boolean>;
-    set: (
-      key: "isAlwaysOnTop" | "isAutoClipboard",
-      value: boolean,
-    ) => Promise<boolean>;
+    get(key: "isAlwaysOnTop" | "isAutoClipboard"): Promise<boolean>;
+    get(key: "fromLanguage" | "toLanguage"): Promise<string>;
+    set(key: "isAlwaysOnTop" | "isAutoClipboard", value: boolean): Promise<boolean>;
+    set(key: "fromLanguage" | "toLanguage", value: string): Promise<string>;
   };
 }

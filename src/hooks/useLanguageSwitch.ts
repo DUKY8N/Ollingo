@@ -7,9 +7,13 @@ const useLanguageSwitch = () => {
   const { setIsLanguageAnimating } = useUIStore();
   const switchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const handleLanguageSwitch = () => {
-    swapLanguages();
-    setIsLanguageAnimating(true);
+  const handleLanguageSwitch = async () => {
+    try {
+      setIsLanguageAnimating(true);
+      await swapLanguages();
+    } catch (error) {
+      console.error("Language switch failed:", error);
+    }
 
     if (switchTimeoutRef.current) {
       clearTimeout(switchTimeoutRef.current);

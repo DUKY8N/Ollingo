@@ -49,8 +49,8 @@ contextBridge.exposeInMainWorld("electronClipboard", {
 
 // Settings API
 contextBridge.exposeInMainWorld("electronSettings", {
-  get: (key: "isAlwaysOnTop" | "isAutoClipboard") =>
+  get: (key: "isAlwaysOnTop" | "isAutoClipboard" | "fromLanguage" | "toLanguage") =>
     ipcRenderer.invoke("settings-get", key),
-  set: (key: "isAlwaysOnTop" | "isAutoClipboard", value: boolean) =>
+  set: (key: "isAlwaysOnTop" | "isAutoClipboard" | "fromLanguage" | "toLanguage", value: boolean | string) =>
     ipcRenderer.invoke("settings-set", key, value),
 });
