@@ -153,12 +153,6 @@ ipcMain.handle("settings-set", (_, key: keyof Settings, value: boolean) => {
   return value;
 });
 
-ipcMain.handle("settings-get-all", () => {
-  return {
-    isAlwaysOnTop: store.get("isAlwaysOnTop"),
-    isAutoClipboard: store.get("isAutoClipboard"),
-  };
-});
 
 app.whenReady().then(() => {
   createWindow();

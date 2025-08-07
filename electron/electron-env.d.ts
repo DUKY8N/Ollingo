@@ -43,6 +43,5 @@ interface Window {
       key: "isAlwaysOnTop" | "isAutoClipboard",
       value: boolean,
     ) => Promise<boolean>;
-    getAll: () => Promise<{ isAlwaysOnTop: boolean; isAutoClipboard: boolean }>;
   };
 }
