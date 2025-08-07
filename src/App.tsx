@@ -12,6 +12,7 @@ import useAutoTranslation from "./hooks/useAutoTranslation";
 import LanguageInput from "./components/LanguageInput";
 import IconButton from "./components/IconButton";
 import TranslationStatus from "./components/TranslationStatus";
+import SettingsModal from "./components/SettingsModal";
 
 import { playSound } from "./utils/sound";
 
@@ -24,8 +25,10 @@ const App = () => {
     isSwitchHovered,
     isSwitchPressed,
     isLanguageAnimating,
+    isSettingsModalOpen,
     setIsSwitchHovered,
     setIsSwitchPressed,
+    setIsSettingsModalOpen,
   } = useUIStore();
 
   const translation = useAutoTranslation({ text, from, to });
@@ -59,7 +62,11 @@ const App = () => {
             triggerAnimation={isLanguageAnimating}
           />
           <div className="absolute right-2.5 flex gap-4">
-            <IconButton children=" " />
+            <IconButton
+              children=" "
+              onClick={() => setIsSettingsModalOpen(true)}
+              soundCategory="transitionUp"
+            />
             <IconButton
               children="󰐃"
               onClick={() => setIsAlwaysOnTop(!isAlwaysOnTop)}
@@ -142,6 +149,11 @@ const App = () => {
           />
         </div>
       </div>
+
+      <SettingsModal
+        isOpen={isSettingsModalOpen}
+        onClose={() => setIsSettingsModalOpen(false)}
+      />
     </div>
   );
 };
