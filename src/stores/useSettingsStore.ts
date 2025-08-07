@@ -1,105 +1,67 @@
 import { useState, useEffect } from "react";
 
-interface AppSettings {
-  isAlwaysOnTop: boolean;
-  isAutoClipboard: boolean;
-}
-
-type SettingsKey = keyof AppSettings;
-
-const useSettingsStore = <K extends SettingsKey>(
-  key: K,
-  fallback?: AppSettings[K],
-): [AppSettings[K], (value: AppSettings[K]) => Promise<void>] => {
-  const [value, setValue] = useState<AppSettings[K]>(
-    fallback ?? (false as AppSettings[K]),
-  );
-  const [isInitialized, setIsInitialized] = useState(false);
-
-  useEffect(() => {
-    const loadInitialValue = async () => {
-      try {
-        if (window.electronSettings) {
-          const storedValue = await window.electronSettings.get(key);
-          setValue(storedValue);
-        }
-      } catch (error) {
-        console.warn(`Failed to load electron setting "${key}":`, error);
-        if (fallback !== undefined) {
-          setValue(fallback);
-        }
-      } finally {
-        setIsInitialized(true);
-      }
-    };
-
-    loadInitialValue();
-  }, [key, fallback]);
-
-  const setValueAndStore = async (newValue: AppSettings[K]): Promise<void> => {
-    try {
-      setValue(newValue);
-
-      if (window.electronSettings) {
-        await window.electronSettings.set(key, newValue);
-      }
-    } catch (error) {
-      console.error(`Failed to save electron setting "${key}":`, error);
-      setValue(value);
-      throw error;
-    }
-  };
-
-  return [value, setValueAndStore];
-};
-
-export const useAllAppSettings = (): [
-  AppSettings | null,
-  (settings: Partial<AppSettings>) => Promise<void>,
+export const useIsAlwaysOnTop = (): [
+  boolean,
+  (value: boolean) => Promise<void>,
 ] => {
-  const [settings, setSettings] = useState<AppSettings | null>(null);
+  const [isAlwaysOnTop, setIsAlwaysOnTop] = useState(false);
 
   useEffect(() => {
-    const loadAllSettings = async () => {
+    const initializeState = async () => {
       try {
-        if (window.electronSettings) {
-          const allSettings = await window.electronSettings.getAll();
-          setSettings(allSettings);
-        }
+        const windowState = await window.electronWindow.isAlwaysOnTop();
+        setIsAlwaysOnTop(windowState);
       } catch (error) {
-        console.warn("Failed to load all electron settings:", error);
+        console.warn("Failed to get window state:", error);
       }
     };
 
-    loadAllSettings();
+    initializeState();
   }, []);
 
-  const updateSettings = async (
-    newSettings: Partial<AppSettings>,
-  ): Promise<void> => {
-    if (!settings) return;
-
+  const toggle = async (value: boolean): Promise<void> => {
     try {
-      const promises = Object.entries(newSettings).map(([key, value]) => {
-        if (window.electronSettings) {
-          return window.electronSettings.set(
-            key as SettingsKey,
-            value as boolean,
-          );
-        }
-        return Promise.resolve();
-      });
-
-      await Promise.all(promises);
-      setSettings({ ...settings, ...newSettings });
+      await window.electronWindow.setAlwaysOnTop(value);
+      await window.electronSettings?.set("isAlwaysOnTop", value);
+      setIsAlwaysOnTop(value);
     } catch (error) {
-      console.error("Failed to update electron settings:", error);
+      console.error("Failed to set always on top:", error);
       throw error;
     }
   };
 
-  return [settings, updateSettings];
+  return [isAlwaysOnTop, toggle];
 };
 
-export default useSettingsStore;
+export const useIsAutoClipboard = (): [
+  boolean,
+  (value: boolean) => Promise<void>,
+] => {
+  const [isAutoClipboard, setIsAutoClipboard] = useState(false);
 
+  useEffect(() => {
+    const loadSetting = async () => {
+      try {
+        const saved = await window.electronSettings?.get("isAutoClipboard");
+        setIsAutoClipboard(saved ?? false);
+      } catch (error) {
+        console.warn("Failed to load auto clipboard setting:", error);
+      }
+    };
+
+    loadSetting();
+  }, []);
+
+  const toggle = async (value: boolean): Promise<void> => {
+    try {
+      await window.electronSettings?.set("isAutoClipboard", value);
+      setIsAutoClipboard(value);
+    } catch (error) {
+      console.error("Failed to save auto clipboard setting:", error);
+      setIsAutoClipboard(isAutoClipboard);
+      throw error;
+    }
+  };
+
+  return [isAutoClipboard, toggle];
+};

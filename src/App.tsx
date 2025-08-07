@@ -1,11 +1,10 @@
 import { motion } from "motion/react";
 import useTranslationStore from "./stores/useTranslationStore";
 import useUIStore from "./stores/useUIStore";
-import useSettingsStore from "./stores/useSettingsStore";
+import { useIsAlwaysOnTop, useIsAutoClipboard } from "./stores/useSettingsStore";
 import useClipboardWatcher from "./hooks/useClipboardWatcher";
 import useLanguageSwitch from "./hooks/useLanguageSwitch";
 import useAutoTranslation from "./hooks/useAutoTranslation";
-import useWindowState from "./hooks/useWindowState";
 import LanguageInput from "./components/LanguageInput";
 import IconButton from "./components/IconButton";
 import TranslationStatus from "./components/TranslationStatus";
@@ -14,9 +13,8 @@ import { playSound } from "./utils/sound";
 
 const App = () => {
   const { text, from, to, setText, setFrom, setTo } = useTranslationStore();
-  const [isAlwaysOnTop, setIsAlwaysOnTop] = useSettingsStore("isAlwaysOnTop");
-  const [isAutoClipboard, setIsAutoClipboard] =
-    useSettingsStore("isAutoClipboard");
+  const [isAlwaysOnTop, setIsAlwaysOnTop] = useIsAlwaysOnTop();
+  const [isAutoClipboard, setIsAutoClipboard] = useIsAutoClipboard();
   const {
     isSwitchHovered,
     isSwitchPressed,
@@ -34,7 +32,6 @@ const App = () => {
     onTextChange: setText,
   });
 
-  useWindowState({ setIsAlwaysOnTop });
 
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center p-2">
@@ -57,11 +54,7 @@ const App = () => {
             <IconButton children=" " />
             <IconButton
               children="󰐃"
-              onClick={async () => {
-                const newValue = !isAlwaysOnTop;
-                await window.electronWindow.setAlwaysOnTop(newValue);
-                await setIsAlwaysOnTop(newValue);
-              }}
+              onClick={() => setIsAlwaysOnTop(!isAlwaysOnTop)}
               isActive={isAlwaysOnTop}
               soundCategory={isAlwaysOnTop ? "toggleOff" : "toggleOn"}
             />
