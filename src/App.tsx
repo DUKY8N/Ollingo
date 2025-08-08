@@ -80,6 +80,7 @@ const App = () => {
         <IconButton
           children="󰅍 "
           className="absolute bottom-2 right-4.5"
+          soundCategory="button"
           onClick={() => {
             if (translation.data) {
               window.electronClipboard.writeText(translation.data);
@@ -106,7 +107,10 @@ const App = () => {
         <div className="relative flex h-full w-full flex-col items-center gap-2 p-2">
           <motion.button
             children=" "
-            onClick={handleLanguageSwitch}
+            onClick={() => {
+              playSound("button");
+              handleLanguageSwitch();
+            }}
             onMouseDown={() => setIsSwitchPressed(true)}
             onMouseUp={() => setIsSwitchPressed(false)}
             onMouseEnter={() => {
